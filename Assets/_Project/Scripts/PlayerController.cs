@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +17,12 @@ public class PlayerController : MonoBehaviour
     
     // Ссылка на сгенерированный класс Input Actions
     private PlayerInputActions inputActions;
+
+    [Header("Настройки фаеров")]
+    public GameObject firePrefab;         // Префаб фаера (не забудьте установить тег "Fire")
+    public Transform fireSpawnPoint;      // Точка, из которой будет появляться фаер
+    public int maxFires = 3;              // Общее количество фаеров, доступных игроку
+    public float throwForce = 10f;
 
     private void Awake()
     {
@@ -39,6 +46,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Move.canceled += OnMove;
         inputActions.Player.Look.performed += OnLook;
         inputActions.Player.Look.canceled += OnLook;
+        inputActions.Player.Fire.performed += OnFire;
     }
 
     private void OnDisable()
@@ -49,6 +57,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Move.canceled -= OnMove;
         inputActions.Player.Look.performed -= OnLook;
         inputActions.Player.Look.canceled -= OnLook;
+        inputActions.Player.Fire.performed -= OnFire;
     }
 
     private void Update()
@@ -75,5 +84,24 @@ public class PlayerController : MonoBehaviour
     private void OnLook(InputAction.CallbackContext context)
     {
         lookInput = context.ReadValue<Vector2>();
+    }
+
+    private void OnFire(InputAction.CallbackContext context)
+    {
+        ThrowFire();
+    }
+
+    void ThrowFire()
+    {
+        Debug.Log("Throw Fire");
+        GameObject fireInstance = Instantiate(firePrefab, fireSpawnPoint.position, Quaternion.identity);
+
+        Rigidbody rb = fireInstance.GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            // Добавляем силу в направлении взгляда точки спавна
+            rb.AddForce(playerCamera.transform.forward * throwForce, ForceMode.Impulse);
+        }
     }
 }
