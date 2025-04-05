@@ -4,19 +4,22 @@ using UnityEngine.UI;
 public class GirlFollower : MonoBehaviour
 {
     [Header("Настройки слежения")]
-    public Transform player;           // Ссылка на объект игрока.
-    public float followDistance = 2f;    // Расстояние, на котором девочка будет следовать за игроком.
-    public float moveSpeed = 3f;         // Скорость движения девочки.
+    public Transform player;             // Ссылка на объект игрока.
+    public float followDistance = 2f;      // Идеальное расстояние от игрока (для расчёта целевой позиции).
+    public float moveSpeed = 3f;           // Скорость движения девочки.
+    public float minFollowDistance = 1f;   // Если девочка ближе этого расстояния, она не двигается.
+    public float maxFollowDistance = 5f;   // Если девочка дальше этого расстояния, она тоже не двигается.
 
     [Header("Настройки энергии")]
-    public float maxEnergy = 100f;             // Максимальное количество энергии.
-    public float energy = 100f;                // Текущее значение энергии.
-    public float energyDecreaseRate = 20f;     // Скорость расхода энергии при движении.
-    public float energyRecoveryRate = 10f;     // Скорость восстановления энергии, когда девочка стоит.
+    public float maxEnergy = 100f;         // Максимальное количество энергии.
+    public float energy = 100f;            // Текущее значение энергии.
+    public float energyDecreaseRate = 20f; // Скорость расхода энергии при движении.
+    public float energyRecoveryRate = 10f; // Скорость восстановления энергии, когда девочка стоит.
 
-    public Slider energySlider;
+    public Slider energySlider;          // UI Slider для отображения уровня энергии.
 
     bool isResting = false;
+    float restTimer = 0f;
 
     void Start()
     {
@@ -29,19 +32,33 @@ public class GirlFollower : MonoBehaviour
         }
     }
 
-    private void Update()
+    void Update()
     {
-        // Если энергия больше нуля, девочка пытается следовать за игроком.
+        // Всегда поворачиваемся лицом к игроку
+        RotateTowardsPlayer();
+
+        // Расстояние до игрока
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        // Если энергия есть и не в режиме отдыха, двигаемся только если игрок в нужном диапазоне
         if (energy > 0f && !isResting)
         {
-            FollowPlayer();
+            if (distanceToPlayer >= minFollowDistance && distanceToPlayer <= maxFollowDistance)
+            {
+                FollowPlayer();
+            }
+            else
+            {
+                // Если игрок слишком близко или слишком далеко – девочка не движется, а энергия восстанавливается
+                RecoverEnergy();
+            }
         }
         else
         {
-            // Если энергия 0, девочка стоит, и энергия восстанавливается.
+            // Если энергии нет или включен режим отдыха, начинаем восстановление энергии
             isResting = true;
+            ProcessRest();
             RecoverEnergy();
-            if (energy > 25f) isResting = false;
         }
 
         // Обновляем значение слайдера
@@ -51,30 +68,64 @@ public class GirlFollower : MonoBehaviour
         }
     }
 
+    // Двигает девочку к целевой позиции, вычисляемой относительно позиции игрока
     private void FollowPlayer()
     {
-        // Целевая позиция немного позади игрока, чтобы создать ощущение "следования"
-        Vector3 targetPosition = player.position + player.forward * followDistance;
+        // Целевая позиция – позади игрока на расстоянии followDistance
+        Vector3 targetPosition = player.position - player.forward * followDistance;
         Vector3 direction = targetPosition - transform.position;
 
-        // Если расстояние больше заданного порога, двигаемся к цели.
         if (direction.magnitude > 0.1f)
         {
-            // Расход энергии при движении (на основе времени).
+            // Расход энергии происходит только при движении
             energy -= energyDecreaseRate * Time.deltaTime;
             energy = Mathf.Clamp(energy, 0f, maxEnergy);
 
             Vector3 move = direction.normalized * moveSpeed * Time.deltaTime;
             transform.position += move;
-            // Дополнительно можно добавить поворот девочки в сторону игрока:
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.position - transform.position), 0.1f);
         }
-        else RecoverEnergy();
+        else
+        {
+            // Если цель достигнута, энергия восстанавливается
+            RecoverEnergy();
+        }
     }
 
+    // Восстанавливает энергию
     private void RecoverEnergy()
     {
         energy += energyRecoveryRate * Time.deltaTime;
         energy = Mathf.Clamp(energy, 0f, maxEnergy);
+    }
+
+    // Обрабатывает режим отдыха: когда энергия полностью исчерпана, девочка отдыхает 3 секунды,
+    // после чего можно снова двигаться (при условии, что энергия восстановлена выше порога).
+    private void ProcessRest()
+    {
+        if (restTimer <= 0f)
+        {
+            // Запускаем таймер отдыха при полном исчерпании энергии
+            restTimer = 3f;
+        }
+        else
+        {
+            restTimer -= Time.deltaTime;
+            if (restTimer <= 0f && energy > 25f)
+            {
+                // Выходим из режима отдыха, если энергия восстановилась выше 25
+                isResting = false;
+            }
+        }
+    }
+
+    // Всегда поворачивает девочку в сторону игрока
+    private void RotateTowardsPlayer()
+    {
+        Vector3 lookDirection = player.position - transform.position;
+        if (lookDirection.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.1f);
+        }
     }
 }
