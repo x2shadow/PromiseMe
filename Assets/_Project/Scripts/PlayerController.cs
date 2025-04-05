@@ -24,6 +24,14 @@ public class PlayerController : MonoBehaviour
     public int maxFires = 3;              // Общее количество фаеров, доступных игроку
     public float throwForce = 10f;
 
+    [Header("Настройки мини игры")]
+    [SerializeField] private float interactionRange = 3f;
+    [SerializeField] private LayerMask girlLayer; // слой, в котором находится девочка
+
+    private bool isInputBlocked = false;
+
+
+
     private void Awake()
     {
         // Инициализируем Input Actions
@@ -47,6 +55,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Look.performed += OnLook;
         inputActions.Player.Look.canceled += OnLook;
         inputActions.Player.Fire.performed += OnFire;
+        inputActions.Player.Interact.performed += OnInteract;
     }
 
     private void OnDisable()
@@ -58,10 +67,13 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Look.performed -= OnLook;
         inputActions.Player.Look.canceled -= OnLook;
         inputActions.Player.Fire.performed -= OnFire;
+        inputActions.Player.Interact.performed -= OnInteract;
     }
 
     private void Update()
     {
+        if (isInputBlocked) return;
+
         // Движение персонажа
         Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
         characterController.Move(move * moveSpeed * Time.deltaTime);
@@ -78,16 +90,34 @@ public class PlayerController : MonoBehaviour
 
     private void OnMove(InputAction.CallbackContext context)
     {
+        if (isInputBlocked) return;
         moveInput = context.ReadValue<Vector2>();
     }
 
     private void OnLook(InputAction.CallbackContext context)
     {
+        if (isInputBlocked) return;
         lookInput = context.ReadValue<Vector2>();
+    }
+
+    private void OnInteract(InputAction.CallbackContext context)
+    {
+        if (isInputBlocked) return;
+
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, interactionRange))
+        {
+            var minigame = hit.collider.GetComponent<BreathingMinigame>();
+            if (minigame != null)
+            {
+                minigame.StartMinigame(inputActions.Player.Breath);
+            }
+        }
     }
 
     private void OnFire(InputAction.CallbackContext context)
     {
+        if (isInputBlocked) return;
         ThrowFire();
     }
 
@@ -103,5 +133,10 @@ public class PlayerController : MonoBehaviour
             // Добавляем силу в направлении взгляда точки спавна
             rb.AddForce(playerCamera.transform.forward * throwForce, ForceMode.Impulse);
         }
+    }
+
+    public void SetInputBlocked(bool blocked)
+    {
+        isInputBlocked = blocked;
     }
 }
