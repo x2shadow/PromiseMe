@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GirlFollower : MonoBehaviour
 {
@@ -13,7 +14,20 @@ public class GirlFollower : MonoBehaviour
     public float energyDecreaseRate = 20f;     // Скорость расхода энергии при движении.
     public float energyRecoveryRate = 10f;     // Скорость восстановления энергии, когда девочка стоит.
 
+    public Slider energySlider;
+
     bool isResting = false;
+
+    void Start()
+    {
+        // Инициализация слайдера
+        if (energySlider != null)
+        {
+            energySlider.minValue = 0f;
+            energySlider.maxValue = maxEnergy;
+            energySlider.value = energy;
+        }
+    }
 
     private void Update()
     {
@@ -28,6 +42,12 @@ public class GirlFollower : MonoBehaviour
             isResting = true;
             RecoverEnergy();
             if (energy > 25f) isResting = false;
+        }
+
+        // Обновляем значение слайдера
+        if (energySlider != null)
+        {
+            energySlider.value = energy;
         }
     }
 
