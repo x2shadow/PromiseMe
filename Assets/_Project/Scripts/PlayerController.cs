@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     bool secondPart1DialogueHappened = false;
     bool secondPart2DialogueHappened = false;
     bool thirdDialogueHappened = false;
+    public bool fourthDialogueHappened = false;
 
     private void Awake()
     {
@@ -129,17 +130,11 @@ public class PlayerController : MonoBehaviour
             dialogueUI.ShowTutorialDialogue("Нажми E чтобы сыграть в игру");
         }
 
-        if (index == 22) 
-        {
-            secondPart2DialogueHappened = true; 
-            maxFires = 1;
-        }
+        if (index == 22) { secondPart2DialogueHappened = true; maxFires = 1; }
 
-        if (index == 3) 
-        {
-            thirdDialogueHappened = true; 
-            maxFires = 1;
-        }
+        if (index == 3)  { thirdDialogueHappened = true; maxFires = 1; }
+
+        if (index == 4)  { fourthDialogueHappened = true; }
     }
 
     private void RotateTowardsDialogueTarget()
@@ -219,8 +214,6 @@ public class PlayerController : MonoBehaviour
             // Добавляем силу в направлении взгляда точки спавна
             rb.AddForce(playerCamera.transform.forward * throwForce, ForceMode.Impulse);
         }
-
-        //dialogueUI.ShowGirlDialogue("Пипи пупу чек!");
     }
 
     public void SetInputBlocked(bool blocked)

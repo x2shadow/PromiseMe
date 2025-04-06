@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Darkness : MonoBehaviour
 {
+    public PlayerController player;
     public float speed = 1f;
 
     void Update()
@@ -14,5 +15,6 @@ public class Darkness : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Girl")) Debug.Log("Girl eaten by Darkness");
+        if (other.CompareTag("Player") && player.fourthDialogueHappened) Debug.Log("Ending #1");
     }
 }
