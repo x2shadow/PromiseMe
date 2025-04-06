@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Look.canceled += OnLook;
         inputActions.Player.Fire.performed += OnFire;
         inputActions.Player.Interact.performed += OnInteract;
+        inputActions.Player.Pause.performed += OnPause;
     }
 
     private void OnDisable()
@@ -70,6 +71,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Look.canceled -= OnLook;
         inputActions.Player.Fire.performed -= OnFire;
         inputActions.Player.Interact.performed -= OnInteract;
+        inputActions.Player.Pause.performed -= OnPause;
     }
 
     private void Update()
@@ -102,6 +104,11 @@ public class PlayerController : MonoBehaviour
         lookInput = context.ReadValue<Vector2>();
     }
 
+    private void OnPause(InputAction.CallbackContext context)
+    {
+        Debug.Log("Pause");
+    }
+
     private void OnInteract(InputAction.CallbackContext context)
     {
         if (isInputBlocked) return;
@@ -120,7 +127,7 @@ public class PlayerController : MonoBehaviour
     private void OnFire(InputAction.CallbackContext context)
     {
         if (isInputBlocked) return;
-        if ( maxFires > 0) { ThrowFire(); maxFires--; }
+        //if ( maxFires > 0) { ThrowFire(); maxFires--; }
     }
 
     void ThrowFire()
@@ -136,7 +143,7 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(playerCamera.transform.forward * throwForce, ForceMode.Impulse);
         }
 
-        dialogueUI.ShowGirlDialogue("Пипи пупу чек!");
+        //dialogueUI.ShowGirlDialogue("Пипи пупу чек!");
     }
 
     public void SetInputBlocked(bool blocked)
