@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
     bool secondPart2DialogueHappened = false;
     bool thirdDialogueHappened = false;
     public bool fourthDialogueHappened = false;
+    public bool exitedEnding1 = false;
 
     private void Awake()
     {

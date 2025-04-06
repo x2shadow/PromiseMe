@@ -16,6 +16,6 @@ public class Darkness : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Girl")) Debug.Log("Girl eaten by Darkness");
-        if (other.CompareTag("Player") && player.fourthDialogueHappened) { Debug.Log("Ending #1"); SceneManager.LoadScene("Ending#1");}
+        if (other.CompareTag("Player") && player.fourthDialogueHappened && !player.exitedEnding1) { Debug.Log("Ending #1"); SceneManager.LoadScene("Ending#1");}
     }
 }
