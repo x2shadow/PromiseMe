@@ -582,8 +582,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 29461983}
-  speed: 1
-  stopDuration: 5
+  speed: 0.5
+  stopDuration: 7
 --- !u!54 &119663794
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2446,7 +2446,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press SPACE to breathe
+  m_text: Hold SPACE to breathe
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f760963513b699a40af922180859e857, type: 2}
   m_sharedMaterial: {fileID: -450134557157484742, guid: f760963513b699a40af922180859e857,

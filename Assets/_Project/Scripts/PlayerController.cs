@@ -18,7 +18,8 @@ public class PlayerController : MonoBehaviour
     private float xRotation = 0f;
     
     // Ссылка на сгенерированный класс Input Actions
-    private PlayerInputActions inputActions;
+    [HideInInspector]
+    public PlayerInputActions inputActions;
 
     [Header("Настройки фаеров")]
     public GameObject firePrefab;         // Префаб фаера (не забудьте установить тег "Fire")
@@ -146,23 +147,6 @@ public class PlayerController : MonoBehaviour
             qteMinigame.StartQTE(inputActions.Player.Spam);
         }
     }
-
-    private void OnQTEComplete(bool success)
-    {
-        Debug.Log($"QTE завершена, успех: {success}");
-
-        SetInputBlocked(false);
-
-        if (success)
-        {
-            dialogueUI.ShowPlayerDialogue("Получилось! Я победил темноту!");
-        }
-        else
-        {
-            dialogueUI.ShowPlayerDialogue("Почти получилось... Попробую еще раз.");
-        }
-    }
-
 
     private void RotateTowardsDialogueTarget()
     {
