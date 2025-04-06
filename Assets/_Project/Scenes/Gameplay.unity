@@ -478,7 +478,7 @@ GameObject:
   - component: {fileID: 119663794}
   m_Layer: 0
   m_Name: Darkness
-  m_TagString: Untagged
+  m_TagString: Darkness
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -582,7 +582,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 29461983}
-  speed: 0.5
+  speed: 1
+  stopDuration: 5
 --- !u!54 &119663794
 Rigidbody:
   m_ObjectHideFlags: 0

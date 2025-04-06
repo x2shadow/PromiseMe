@@ -10,7 +10,27 @@ public class Darkness : MonoBehaviour
 
     void Update()
     {
-        transform.position += new Vector3(speed * Time.deltaTime, 0f, 0f);
+        if (!isStopped)
+        {
+            transform.position += new Vector3(speed * Time.deltaTime, 0f, 0f);
+        }
+    }
+
+    public void StopTemporarily()
+    {
+        if (!isStopped)
+        {
+            StartCoroutine(StopCoroutine());
+        }
+    }
+
+    private IEnumerator StopCoroutine()
+    {
+        isStopped = true;
+        speed = 0f;
+        yield return new WaitForSeconds(stopDuration);
+        speed = originalSpeed;
+        isStopped = false;
     }
 
     void OnTriggerEnter(Collider other)

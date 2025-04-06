@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 636237827914248043}
   - component: {fileID: 3141481085360349091}
   - component: {fileID: 795472832120747438}
+  - component: {fileID: 8178768645964680529}
   m_Layer: 0
   m_Name: Fire
   m_TagString: Untagged
@@ -117,7 +118,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4656114868793792369}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 1.2
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -148,4 +149,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f899e1f337edf3241ba582abf4f3b0c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 3
+  lifetime: 5
+--- !u!135 &8178768645964680529
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4656114868793792369}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2
+  m_Center: {x: 0, y: 0, z: 0}
