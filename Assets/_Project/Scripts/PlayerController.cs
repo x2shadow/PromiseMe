@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour
     private void OnFire(InputAction.CallbackContext context)
     {
         if (isInputBlocked) return;
-        ThrowFire();
+        if ( maxFires > 0) { ThrowFire(); maxFires--; }
     }
 
     void ThrowFire()
