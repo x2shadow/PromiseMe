@@ -37,6 +37,9 @@ public class PlayerController : MonoBehaviour
 
     private bool isInputBlocked = false;
 
+    bool firstDialogueHappened  = false;
+    bool secondDialogueHappened = false;
+
     private void Awake()
     {
         // Инициализируем Input Actions
@@ -102,11 +105,23 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(Vector3.up * mouseX);
     }
 
-    public void EndDialogue()
+    public void EndDialogue(int index)
     {
         isDialogueActive = false;
         SetInputBlocked(false);
         moveInput = Vector2.zero;
+
+        if (index == 1) 
+        {
+            firstDialogueHappened = true; 
+            dialogueUI.ShowTutorialDialogue("Нажми ЛКМ чтобы кинуть фаер, отгоняющий тьму");
+        }
+
+        if (index == 2) 
+        {
+            secondDialogueHappened = true; 
+            dialogueUI.ShowTutorialDialogue("Нажми E чтобы сыграть в игру");
+        }
     }
 
     private void RotateTowardsDialogueTarget()
@@ -142,6 +157,7 @@ public class PlayerController : MonoBehaviour
     private void OnInteract(InputAction.CallbackContext context)
     {
         if (isInputBlocked) return;
+        if (secondDialogueHappened == false) return;        
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, interactionRange))
@@ -157,7 +173,8 @@ public class PlayerController : MonoBehaviour
     private void OnFire(InputAction.CallbackContext context)
     {
         if (isInputBlocked) return;
-        //if ( maxFires > 0) { ThrowFire(); maxFires--; }
+        if (firstDialogueHappened == false) return;
+        if ( maxFires > 0) { ThrowFire(); maxFires--; }
     }
 
     void ThrowFire()

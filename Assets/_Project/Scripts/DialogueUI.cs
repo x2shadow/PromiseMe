@@ -10,6 +10,9 @@ public class DialogueUI : MonoBehaviour
     public GameObject girlPanel;
     public TMP_Text girlText;
 
+    public GameObject tutorialPanel;
+    public TMP_Text tutorialText;
+
     public float dialogueDuration = 3f;
 
     public void ShowPlayerDialogue(string text)
@@ -20,6 +23,11 @@ public class DialogueUI : MonoBehaviour
     public void ShowGirlDialogue(string text)
     {
         StartCoroutine(ShowDialogue(girlPanel, girlText, text));
+    }
+
+    public void ShowTutorialDialogue(string text)
+    {
+        StartCoroutine(ShowDialogue(tutorialPanel, tutorialText, text));
     }
 
     private IEnumerator ShowDialogue(GameObject panel, TMP_Text textComponent, string text)

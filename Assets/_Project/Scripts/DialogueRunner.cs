@@ -8,12 +8,12 @@ public class DialogueRunner : MonoBehaviour
 
     PlayerController player;
 
-    public void StartDialogue(DialogueScript script, PlayerController player)
+    public void StartDialogue(DialogueScript script, PlayerController player, int index)
     {
-        StartCoroutine(RunDialogue(script, player));
+        StartCoroutine(RunDialogue(script, player, index));
     }
 
-    private IEnumerator RunDialogue(DialogueScript script, PlayerController player)
+    private IEnumerator RunDialogue(DialogueScript script, PlayerController player, int index)
     {
         foreach (var line in script.lines)
         {
@@ -28,6 +28,6 @@ public class DialogueRunner : MonoBehaviour
             girlUI.Hide();
         }
 
-        player.EndDialogue();
+        player.EndDialogue(index);
     }
 }

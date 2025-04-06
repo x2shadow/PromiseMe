@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
+    public int dialogueIndex = 0;
     public DialogueScript dialogueScript;   // Сценарий диалога
     public DialogueRunner dialogueRunner;   // Ссылка на DialogueRunner
 
@@ -26,7 +27,7 @@ public class DialogueTrigger : MonoBehaviour
         if (dialogueRunner != null && dialogueScript != null)
         {
             player.isDialogueActive = true;
-            dialogueRunner.StartDialogue(dialogueScript, player);
+            dialogueRunner.StartDialogue(dialogueScript, player, dialogueIndex);
         }
         else
         {
