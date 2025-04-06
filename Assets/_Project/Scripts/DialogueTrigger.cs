@@ -7,12 +7,15 @@ public class DialogueTrigger : MonoBehaviour
 
     private bool hasTriggered = false;      // Чтобы не запускать повторно
 
+    PlayerController player;
+
     private void OnTriggerEnter(Collider other)
     {
         if (hasTriggered) return;
 
         if (other.CompareTag("Player"))
         {
+            player = other.GetComponent<PlayerController>();
             hasTriggered = true;
             StartDialogue();
         }
@@ -22,7 +25,8 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (dialogueRunner != null && dialogueScript != null)
         {
-            dialogueRunner.StartDialogue(dialogueScript);
+            player.isDialogueActive = true;
+            dialogueRunner.StartDialogue(dialogueScript, player);
         }
         else
         {

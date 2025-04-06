@@ -6,12 +6,14 @@ public class DialogueRunner : MonoBehaviour
     public DialogueScriptUI playerUI;
     public DialogueScriptUI girlUI;
 
-    public void StartDialogue(DialogueScript script)
+    PlayerController player;
+
+    public void StartDialogue(DialogueScript script, PlayerController player)
     {
-        StartCoroutine(RunDialogue(script));
+        StartCoroutine(RunDialogue(script, player));
     }
 
-    private IEnumerator RunDialogue(DialogueScript script)
+    private IEnumerator RunDialogue(DialogueScript script, PlayerController player)
     {
         foreach (var line in script.lines)
         {
@@ -25,5 +27,7 @@ public class DialogueRunner : MonoBehaviour
             playerUI.Hide();
             girlUI.Hide();
         }
+
+        player.EndDialogue();
     }
 }

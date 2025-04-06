@@ -30,9 +30,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float interactionRange = 3f;
     [SerializeField] private LayerMask girlLayer; // слой, в котором находится девочка
 
+    [Header("Диалог")]
+    public bool isDialogueActive = false;
+    public Transform dialogueTarget;
+    public float dialogueRotationSpeed = 10f;
+
     private bool isInputBlocked = false;
-
-
 
     private void Awake()
     {
@@ -76,6 +79,13 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (isDialogueActive)
+        {
+            SetInputBlocked(true);
+            RotateTowardsDialogueTarget();
+            return;
+        }
+
         if (isInputBlocked) return;
 
         // Движение персонажа
@@ -90,6 +100,26 @@ public class PlayerController : MonoBehaviour
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
+    }
+
+    public void EndDialogue()
+    {
+        isDialogueActive = false;
+        SetInputBlocked(false);
+        moveInput = Vector2.zero;
+    }
+
+    private void RotateTowardsDialogueTarget()
+    {
+        if (dialogueTarget == null) return;
+
+        Vector3 direction = dialogueTarget.position - transform.position;
+        direction.y = 0f; // игнорируем вертикальную составляющую
+        if (direction.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, dialogueRotationSpeed * Time.deltaTime);
+        }
     }
 
     private void OnMove(InputAction.CallbackContext context)

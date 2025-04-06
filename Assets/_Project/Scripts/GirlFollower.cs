@@ -9,6 +9,7 @@ public class GirlFollower : MonoBehaviour
     public float moveSpeed = 3f;           // Скорость движения девочки.
     public float minFollowDistance = 1f;   // Если девочка ближе этого расстояния, она не двигается.
     public float maxFollowDistance = 5f;   // Если девочка дальше этого расстояния, она тоже не двигается.
+    public float maxTiltAngle = 20f;
 
     [Header("Настройки энергии")]
     public float maxEnergy = 100f;         // Максимальное количество энергии.
@@ -82,6 +83,7 @@ public class GirlFollower : MonoBehaviour
             energy = Mathf.Clamp(energy, 0f, maxEnergy);
 
             Vector3 move = direction.normalized * moveSpeed * Time.deltaTime;
+            move = new Vector3(move.x, 0f, move.z);
             transform.position += move;
         }
         else
@@ -128,4 +130,29 @@ public class GirlFollower : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.1f);
         }
     }
+
+    private void RotateTowardsPlayer2()
+    {
+        Vector3 lookDirection = player.position - transform.position;
+        if (lookDirection.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+            // Получаем углы поворота
+            Vector3 targetEuler = targetRotation.eulerAngles;
+            
+            // Преобразуем угол X из [0,360) в диапазон [-180,180]
+            if (targetEuler.x > 180f)
+                targetEuler.x -= 360f;
+            
+            // Ограничиваем наклон по оси X (например, maxTiltAngle = 20 градусов)
+            targetEuler.x = Mathf.Clamp(targetEuler.x, -maxTiltAngle, maxTiltAngle);
+            
+            // Формируем конечный кватернион
+            targetRotation = Quaternion.Euler(targetEuler);
+
+            // Плавный переход
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.1f);
+        }
+    }
+
 }
