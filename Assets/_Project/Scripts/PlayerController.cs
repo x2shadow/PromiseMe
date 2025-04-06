@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public DialogueUI dialogueUI;
+
     [Header("Настройки движения")]
     public float moveSpeed = 5f;
     public float mouseSensitivity = 100f;
@@ -133,6 +135,8 @@ public class PlayerController : MonoBehaviour
             // Добавляем силу в направлении взгляда точки спавна
             rb.AddForce(playerCamera.transform.forward * throwForce, ForceMode.Impulse);
         }
+
+        dialogueUI.ShowGirlDialogue("Пипи пупу чек!");
     }
 
     public void SetInputBlocked(bool blocked)
