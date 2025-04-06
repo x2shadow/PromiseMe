@@ -73,6 +73,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Spam"",
+                    ""type"": ""Button"",
+                    ""id"": ""edd42ee2-fb44-4ad5-a3f7-23a264448623"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""6ec3e5dc-3a8b-4daa-a23e-ec51e4c66105"",
@@ -322,6 +331,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Breath"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""419a569e-0542-49cd-b767-d5b1d561a857"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Spam"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -864,6 +884,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Breath = m_Player.FindAction("Breath", throwIfNotFound: true);
+        m_Player_Spam = m_Player.FindAction("Spam", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -949,6 +970,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Breath;
+    private readonly InputAction m_Player_Spam;
     private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
@@ -959,6 +981,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Breath => m_Wrapper.m_Player_Breath;
+        public InputAction @Spam => m_Wrapper.m_Player_Spam;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -984,6 +1007,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Breath.started += instance.OnBreath;
             @Breath.performed += instance.OnBreath;
             @Breath.canceled += instance.OnBreath;
+            @Spam.started += instance.OnSpam;
+            @Spam.performed += instance.OnSpam;
+            @Spam.canceled += instance.OnSpam;
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
@@ -1006,6 +1032,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Breath.started -= instance.OnBreath;
             @Breath.performed -= instance.OnBreath;
             @Breath.canceled -= instance.OnBreath;
+            @Spam.started -= instance.OnSpam;
+            @Spam.performed -= instance.OnSpam;
+            @Spam.canceled -= instance.OnSpam;
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
@@ -1151,6 +1180,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnBreath(InputAction.CallbackContext context);
+        void OnSpam(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
     }
     public interface IUIActions

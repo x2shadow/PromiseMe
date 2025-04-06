@@ -34,6 +34,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float interactionRange = 3f;
     [SerializeField] private LayerMask girlLayer; // слой, в котором находится девочка
 
+    [Header("Мини-игра QTE")]
+    [SerializeField] private QTEBarMinigame qteMinigame;
+
     [Header("Диалог")]
     public bool isDialogueActive = false;
     public Transform dialogueTarget;
@@ -119,6 +122,8 @@ public class PlayerController : MonoBehaviour
         SetInputBlocked(false);
         moveInput = Vector2.zero;
 
+        //if (index == 0) qteMinigame.StartQTE(inputActions.Player.Spam);
+
         if (index == 1) 
         {
             firstDialogueHappened = true; 
@@ -135,8 +140,29 @@ public class PlayerController : MonoBehaviour
 
         if (index == 3)  { thirdDialogueHappened = true; maxFires = 1; }
 
-        if (index == 4)  { fourthDialogueHappened = true; }
+        if (index == 4)
+        {
+            fourthDialogueHappened = true; 
+            qteMinigame.StartQTE(inputActions.Player.Spam);
+        }
     }
+
+    private void OnQTEComplete(bool success)
+    {
+        Debug.Log($"QTE завершена, успех: {success}");
+
+        SetInputBlocked(false);
+
+        if (success)
+        {
+            dialogueUI.ShowPlayerDialogue("Получилось! Я победил темноту!");
+        }
+        else
+        {
+            dialogueUI.ShowPlayerDialogue("Почти получилось... Попробую еще раз.");
+        }
+    }
+
 
     private void RotateTowardsDialogueTarget()
     {

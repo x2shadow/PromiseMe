@@ -24,6 +24,7 @@ public class GirlFollower : MonoBehaviour
     bool hasSaidWait = false;
 
     bool isResting = false;
+    public bool isDead = false;
     float restTimer = 0f;
 
     void Start()
@@ -39,6 +40,7 @@ public class GirlFollower : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;
         // Всегда поворачиваемся лицом к игроку
         RotateTowardsPlayer();
 

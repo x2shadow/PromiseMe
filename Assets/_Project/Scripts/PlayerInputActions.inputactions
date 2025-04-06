@@ -51,6 +51,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Spam",
+                    "type": "Button",
+                    "id": "edd42ee2-fb44-4ad5-a3f7-23a264448623",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Pause",
                     "type": "Button",
                     "id": "6ec3e5dc-3a8b-4daa-a23e-ec51e4c66105",
@@ -300,6 +309,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Breath",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "419a569e-0542-49cd-b767-d5b1d561a857",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Spam",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
