@@ -19,6 +19,10 @@ public class GirlFollower : MonoBehaviour
 
     public Slider energySlider;          // UI Slider для отображения уровня энергии.
 
+    public DialogueUI dialogueUI;
+
+    bool hasSaidWait = false;
+
     bool isResting = false;
     float restTimer = 0f;
 
@@ -47,11 +51,23 @@ public class GirlFollower : MonoBehaviour
             if (distanceToPlayer >= minFollowDistance && distanceToPlayer <= maxFollowDistance)
             {
                 FollowPlayer();
+                hasSaidWait = false;
+            }
+            else if (distanceToPlayer > maxFollowDistance)
+            {
+                // Если игрок слишком далеко
+                if (!hasSaidWait)
+                {
+                    dialogueUI.ShowGirlDialogue("Я не вижу тебя!");
+                    hasSaidWait = true;
+                }
+                RecoverEnergy();
             }
             else
             {
                 // Если игрок слишком близко или слишком далеко – девочка не движется, а энергия восстанавливается
                 RecoverEnergy();
+                hasSaidWait = false;
             }
         }
         else

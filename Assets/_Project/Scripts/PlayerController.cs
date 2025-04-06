@@ -23,8 +23,12 @@ public class PlayerController : MonoBehaviour
     [Header("Настройки фаеров")]
     public GameObject firePrefab;         // Префаб фаера (не забудьте установить тег "Fire")
     public Transform fireSpawnPoint;      // Точка, из которой будет появляться фаер
-    public int maxFires = 3;              // Общее количество фаеров, доступных игроку
+    public int maxFires = 222;              // Общее количество фаеров, доступных игроку
     public float throwForce = 10f;
+
+    [Header("Кулдаун фаера")]
+    public float fireCooldown = 5f; // длительность кулдауна
+    private float lastFireTime = -Mathf.Infinity; // время последнего броска
 
     [Header("Настройки мини игры")]
     [SerializeField] private float interactionRange = 3f;
@@ -38,7 +42,9 @@ public class PlayerController : MonoBehaviour
     private bool isInputBlocked = false;
 
     bool firstDialogueHappened  = false;
-    bool secondDialogueHappened = false;
+    bool secondPart1DialogueHappened = false;
+    bool secondPart2DialogueHappened = false;
+    bool thirdDialogueHappened = false;
 
     private void Awake()
     {
@@ -117,10 +123,22 @@ public class PlayerController : MonoBehaviour
             dialogueUI.ShowTutorialDialogue("Нажми ЛКМ чтобы кинуть фаер, отгоняющий тьму");
         }
 
-        if (index == 2) 
+        if (index == 21) 
         {
-            secondDialogueHappened = true; 
+            secondPart1DialogueHappened = true; 
             dialogueUI.ShowTutorialDialogue("Нажми E чтобы сыграть в игру");
+        }
+
+        if (index == 22) 
+        {
+            secondPart2DialogueHappened = true; 
+            maxFires = 1;
+        }
+
+        if (index == 3) 
+        {
+            thirdDialogueHappened = true; 
+            maxFires = 1;
         }
     }
 
@@ -157,7 +175,7 @@ public class PlayerController : MonoBehaviour
     private void OnInteract(InputAction.CallbackContext context)
     {
         if (isInputBlocked) return;
-        if (secondDialogueHappened == false) return;        
+        if (secondPart1DialogueHappened == false) return;        
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, interactionRange))
@@ -174,7 +192,19 @@ public class PlayerController : MonoBehaviour
     {
         if (isInputBlocked) return;
         if (firstDialogueHappened == false) return;
-        if ( maxFires > 0) { ThrowFire(); maxFires--; }
+
+        if (Time.time - lastFireTime < fireCooldown)
+        {
+            Debug.Log("Фаер еще не готов!");
+            return;
+        }
+
+        if ( maxFires > 0)
+        { 
+            ThrowFire(); maxFires--; lastFireTime = Time.time;
+            if (thirdDialogueHappened) return;
+            if (secondPart2DialogueHappened) { dialogueUI.ShowPlayerDialogue("Этот фаер был последний..."); }
+        }
     }
 
     void ThrowFire()
