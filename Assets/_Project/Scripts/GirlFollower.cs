@@ -21,6 +21,8 @@ public class GirlFollower : MonoBehaviour
 
     public DialogueUI dialogueUI;
 
+    Animator animator;
+
     bool hasSaidWait = false;
 
     bool isResting = false;
@@ -29,6 +31,8 @@ public class GirlFollower : MonoBehaviour
 
     void Start()
     {
+        animator = GetComponentInChildren<Animator>();
+
         // Инициализация слайдера
         if (energySlider != null)
         {
@@ -42,7 +46,7 @@ public class GirlFollower : MonoBehaviour
     {
         if (isDead) return;
         // Всегда поворачиваемся лицом к игроку
-        RotateTowardsPlayer();
+        RotateTowardsPlayer2();
 
         // Расстояние до игрока
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
@@ -103,6 +107,8 @@ public class GirlFollower : MonoBehaviour
             Vector3 move = direction.normalized * moveSpeed * Time.deltaTime;
             move = new Vector3(move.x, 0f, move.z);
             transform.position += move;
+
+            animator.SetBool("isWalking", true);
         }
         else
         {
@@ -114,6 +120,8 @@ public class GirlFollower : MonoBehaviour
     // Восстанавливает энергию
     private void RecoverEnergy()
     {
+        animator.SetBool("isWalking", false);
+
         energy += energyRecoveryRate * Time.deltaTime;
         energy = Mathf.Clamp(energy, 0f, maxEnergy);
     }
@@ -122,6 +130,8 @@ public class GirlFollower : MonoBehaviour
     // после чего можно снова двигаться (при условии, что энергия восстановлена выше порога).
     private void ProcessRest()
     {
+        animator.SetBool("isWalking", false);
+
         if (restTimer <= 0f)
         {
             // Запускаем таймер отдыха при полном исчерпании энергии
