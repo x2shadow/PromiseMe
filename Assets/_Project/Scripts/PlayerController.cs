@@ -43,6 +43,10 @@ public class PlayerController : MonoBehaviour
     public Transform dialogueTarget;
     public float dialogueRotationSpeed = 10f;
 
+    [Header("Пауза")]
+    [SerializeField] private GameObject pauseCanvas; 
+    private bool isPaused = false;
+
     private bool isInputBlocked = false;
 
     bool firstDialogueHappened  = false;
@@ -62,6 +66,9 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        float savedSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 100f);
+        mouseSensitivity = savedSensitivity;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -175,7 +182,31 @@ public class PlayerController : MonoBehaviour
 
     private void OnPause(InputAction.CallbackContext context)
     {
-        Debug.Log("Pause");
+        if (context.performed)
+        {
+            TogglePause();
+        }
+    }
+
+    private void TogglePause()
+    {
+        isPaused = !isPaused;
+        pauseCanvas.SetActive(isPaused);
+
+        if (isPaused)
+        {
+            Time.timeScale = 0f;  // Останавливаем время
+            SetInputBlocked(true); // Блокируем управление
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Time.timeScale = 1f;  // Возвращаем время
+            SetInputBlocked(false); // Возвращаем управление
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
     private void OnInteract(InputAction.CallbackContext context)
