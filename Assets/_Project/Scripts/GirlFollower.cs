@@ -64,7 +64,7 @@ public class GirlFollower : MonoBehaviour
                 // Если игрок слишком далеко
                 if (!hasSaidWait)
                 {
-                    //dialogueUI.ShowGirlDialogue("Я не вижу тебя!");
+                    dialogueUI.ShowGirlDialogue("Wait for me!");
                     hasSaidWait = true;
                 }
                 RecoverEnergy();

@@ -2158,7 +2158,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Controls:\n\nWASD \u2014 MOVE\nTAB  \u2014 PAUSE\n\nLMB \u2014 THROW FIRE\nF  
+  m_text: "Controls:\n\nWASD \u2014 MOVE\nTAB  \u2014 PAUSE\n\nF \u2014 THROW FLARE\nE
     \u2014 INTERACT\nSPACEBAR \u2014 BREATH (QTE)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 035b884383d3e614ea757cb90e6c9e51, type: 2}

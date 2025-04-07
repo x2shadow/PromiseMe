@@ -17,12 +17,11 @@ public class PlayerController : MonoBehaviour
     private Camera playerCamera;
     private float xRotation = 0f;
     
-    // Ссылка на сгенерированный класс Input Actions
     [HideInInspector]
     public PlayerInputActions inputActions;
 
     [Header("Настройки фаеров")]
-    public GameObject firePrefab;         // Префаб фаера (не забудьте установить тег "Fire")
+    public GameObject firePrefab;
     public Transform fireSpawnPoint;      // Точка, из которой будет появляться фаер
     public int maxFires = 222;              // Общее количество фаеров, доступных игроку
     public float throwForce = 10f;
@@ -135,13 +134,13 @@ public class PlayerController : MonoBehaviour
         if (index == 1) 
         {
             firstDialogueHappened = true; 
-            dialogueUI.ShowTutorialDialogue("Нажми F чтобы кинуть фаер, отгоняющий тьму");
+            dialogueUI.ShowTutorialDialogue("Press F to throw the flare that drives away the darkness");
         }
 
         if (index == 21) 
         {
             secondPart1DialogueHappened = true; 
-            dialogueUI.ShowTutorialDialogue("Нажми E чтобы сыграть в игру");
+            dialogueUI.ShowTutorialDialogue("Press E to play the game");
         }
 
         if (index == 22) { secondPart2DialogueHappened = true; maxFires = 1; }
@@ -240,7 +239,7 @@ public class PlayerController : MonoBehaviour
         { 
             ThrowFire(); maxFires--; lastFireTime = Time.time;
             if (thirdDialogueHappened) return;
-            if (secondPart2DialogueHappened) { dialogueUI.ShowPlayerDialogue("Этот фаер был последний..."); }
+            if (secondPart2DialogueHappened) { dialogueUI.ShowPlayerDialogue("This flare was the last one..."); }
         }
     }
 
