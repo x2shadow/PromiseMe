@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour
         if (index == 1) 
         {
             firstDialogueHappened = true; 
-            dialogueUI.ShowTutorialDialogue("Нажми ЛКМ чтобы кинуть фаер, отгоняющий тьму");
+            dialogueUI.ShowTutorialDialogue("Нажми F чтобы кинуть фаер, отгоняющий тьму");
         }
 
         if (index == 21) 

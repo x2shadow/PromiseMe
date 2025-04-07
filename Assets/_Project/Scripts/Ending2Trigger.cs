@@ -8,6 +8,8 @@ public class Ending2Trigger : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("Ending#2");
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         SceneManager.LoadScene("Ending#2");
     }
 }

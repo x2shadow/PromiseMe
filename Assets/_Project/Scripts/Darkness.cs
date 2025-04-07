@@ -7,6 +7,15 @@ public class Darkness : MonoBehaviour
 {
     public PlayerController player;
     public float speed = 1f;
+    public float stopDuration = 7f; // время остановки тьмы
+
+    private float originalSpeed;
+    private bool isStopped = false;
+
+    void Start()
+    {
+        originalSpeed = speed;
+    }
 
     void Update()
     {
@@ -36,6 +45,12 @@ public class Darkness : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Girl")) Debug.Log("Girl eaten by Darkness");
-        if (other.CompareTag("Player") && player.fourthDialogueHappened && !player.exitedEnding1) { Debug.Log("Ending #1"); SceneManager.LoadScene("Ending#1");}
+        if (other.CompareTag("Player") && player.fourthDialogueHappened && !player.exitedEnding1)
+        {
+            Debug.Log("Ending #1");
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            SceneManager.LoadScene("Ending#1");
+        }
     }
 }
