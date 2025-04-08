@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     public GameObject firePrefab;
     public Transform fireSpawnPoint;      // Точка, из которой будет появляться фаер
     public int maxFires = 222;              // Общее количество фаеров, доступных игроку
-    public float throwForce = 10f;
+    public float throwForce = 15f;
 
     [Header("Кулдаун фаера")]
     public float fireCooldown = 5f; // длительность кулдауна
@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     [Header("Настройки мини игры")]
     [SerializeField] private float interactionRange = 3f;
     [SerializeField] private LayerMask girlLayer; // слой, в котором находится девочка
+    [SerializeField] GirlFollower girlFollower;
 
     [Header("Мини-игра QTE")]
     [SerializeField] private QTEBarMinigame qteMinigame;
@@ -145,7 +146,13 @@ public class PlayerController : MonoBehaviour
 
         if (index == 22) { secondPart2DialogueHappened = true; maxFires = 1; }
 
-        if (index == 3)  { thirdDialogueHappened = true; maxFires = 1; }
+        if (index == 3)
+        {
+            thirdDialogueHappened = true; maxFires = 1;
+            girlFollower.moveSpeed = 4f;
+            girlFollower.maxFollowDistance = 50f;
+            girlFollower.energyRecoveryRate = 50f;
+        }
 
         if (index == 4)
         {
@@ -187,7 +194,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void TogglePause()
+    public void TogglePause()
     {
         isPaused = !isPaused;
         pauseCanvas.SetActive(isPaused);

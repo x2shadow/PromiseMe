@@ -23,3 +23,6 @@ MonoBehaviour:
   - speaker: 0
     text: Of course, I promise
     duration: 1
+  - speaker: 0
+    text: '*I have only one flare left..*'
+    duration: 1
