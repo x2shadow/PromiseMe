@@ -975,7 +975,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 29461983}
-  speed: 1.25
+  speed: 1.1
   stopDuration: 8
 --- !u!54 &119663794
 Rigidbody:
@@ -9687,7 +9687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ceaeb22b039fe842b7887deed0ee97f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fillSpeed: 0.1
+  fillSpeed: 0.15
   drainSpeed: 0.5
   qteSlider: {fileID: 1829671781}
   playerController: {fileID: 29461983}
